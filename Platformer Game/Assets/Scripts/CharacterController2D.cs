@@ -5,13 +5,13 @@ using UnityEngine;
 public class CharacterController2D : MonoBehaviour
 {
 
-    private Rigidbody2D rb2D; 
+    private Rigidbody2D rb2D;  //rigidbody component
 
-    public float moveSpeed = 3f;
-    public float jumpForce = 60f; 
-    public bool isJumping = true;
-    private float moveHorizontal;
-    private float moveVertical;
+    public float moveSpeed = 3f; //variable for speed of moving 
+    public float jumpForce = 60f; // variable for magnitude of jump 
+    public bool isJumping = true; // variable to check if player is jumping
+    private float moveHorizontal; // variable to check when moving horizontally 
+    private float moveVertical;   // variable to check when moving Vertically 
 
     // Start is called before the first frame update
     void Start()
@@ -24,18 +24,18 @@ public class CharacterController2D : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        moveHorizontal = Input.GetAxisRaw("Horizontal");
-        moveVertical = Input.GetAxisRaw("Jump");
+        moveHorizontal = Input.GetAxisRaw("Horizontal"); //getting input from user for moving horizontally and storing it in moveHorizontal
+        moveVertical = Input.GetAxisRaw("Jump");    //getting input from user for moving Vertically and storing it in moveVertical
     }
 
     private void FixedUpdate()
     {
-        if (moveHorizontal > 0.1f || moveHorizontal < -0.1f )
+        if (moveHorizontal > 0.1f || moveHorizontal < -0.1f )   //move if move Horizontal is more than 0.1 or moveHorizontal is less than -0.1
         {
-            rb2D.AddForce(new Vector2(moveHorizontal * moveSpeed , 0f), ForceMode2D.Impulse);
+            rb2D.AddForce(new Vector2(moveHorizontal * moveSpeed , 0f), ForceMode2D.Impulse); 
         }
 
-        if (!isJumping && moveVertical > 0.1f)
+        if (!isJumping && moveVertical > 0.1f)  //jump if isjumping is false and move vertical is more than 0.1
         {
             rb2D.AddForce(new Vector2(0f, moveVertical * jumpForce), ForceMode2D.Impulse);
         }
@@ -43,12 +43,12 @@ public class CharacterController2D : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) 
     {
-        if(collision.gameObject.tag == "Platform")
+        if(collision.gameObject.tag == "Platform") //set isjumping to false me player is colliding with platform 
         {
             isJumping = false; 
         }
     }
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D collision) //set isjumping to true if player stops collision with platform 
     {
         if(collision.gameObject.tag == "Platform")
         {
