@@ -13,6 +13,8 @@ public class CharacterController2D : MonoBehaviour
     private float moveHorizontal; // variable to check when moving horizontally 
     private float moveVertical;   // variable to check when moving Vertically 
 
+    public Joystick joystick;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,20 +26,27 @@ public class CharacterController2D : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        moveHorizontal = Input.GetAxisRaw("Horizontal"); //getting input from user for moving horizontally and storing it in moveHorizontal
-        moveVertical = Input.GetAxisRaw("Jump");    //getting input from user for moving Vertically and storing it in moveVertical
-    }
+        moveHorizontal = joystick.Horizontal; //getting input from user for moving horizontally and storing it in moveHorizontal
+    
+        if(joystick.Vertical > 0.5f)
+        {
+            moveVertical = jumpForce;
+        }else
+        {
+            moveVertical = 0f;
+        }
+    } 
 
     private void FixedUpdate()
     {
-        if (moveHorizontal > 0.1f || moveHorizontal < -0.1f )   //move if move Horizontal is more than 0.1 or moveHorizontal is less than -0.1
+        if (moveHorizontal > 0.2f || moveHorizontal < -0.2f )   //move if move Horizontal is more than 0.1 or moveHorizontal is less than -0.1
         {
             rb2D.AddForce(new Vector2(moveHorizontal * moveSpeed , 0f), ForceMode2D.Impulse); 
         }
 
-        if (!isJumping && moveVertical > 0.1f)  //jump if isjumping is false and move vertical is more than 0.1
+        if (!isJumping)  //jump if isjumping is false and move vertical is more than 0.1
         {
-            rb2D.AddForce(new Vector2(0f, moveVertical * jumpForce), ForceMode2D.Impulse);
+            rb2D.AddForce(new Vector2(0f, moveVertical ), ForceMode2D.Impulse);
         }
     }
 
